@@ -1,7 +1,7 @@
 # Implementación del algoritmo NAT en c
 
 ## Descripción
-El algoritmo NAT (*Network Addres Translation*) es un mecanismo utilizado por routers para cambiar paquetes entre dos redes.
+El algoritmo NAT (*Network Addres Translation*) es un mecanismo utilizado por routers para cambiar paquetes entre redes.
 
 La implementación se hará con procesos en vez de redes, cada proceso teniendo su propia identidad, no podrán interactuar directamente entre ellos, y un proceso que emulará un router, recibiendo y mandando mensajes entre procesos al proceso objetivo.
 
