@@ -1,42 +1,33 @@
+#include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <sys/un.h>
 #include <unistd.h>
 
 int main(int argc, char *argv[]) {
-  int sock_rout, sock_cli;
-  struct sockaddr_un saddr, caddr;
+  char mensaje[256] = "mensaje del servidor";
 
-  int result;
+  int server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
-  if ((sock_rout = socket(AF_UNIX, SOCK_STREAM, 0) < 0)) {
-    perror("socket fallado");
-    exit(EXIT_FAILURE);
-  }
+  struct sockaddr_in saddr;
+  saddr.sin_family = AF_INET;
+  saddr.sin_port = htons(8080);
+  saddr.sin_addr.s_addr = INADDR_ANY;
 
-  saddr.sun_family = AF_UNIX;
-  strcpy(saddr.sun_path, "unix_socket");
+  bind(server_socket, (struct sockadd *)&saddr, sizeof(saddr));
 
-  int slen = sizeof(sock_rout);
+  listen(server_socket, 5);
 
-  bind(sock_rout, (struct sockaddr *)&saddr, slen);
+  int client_socket;
+  client_socket = accept(server_socket, NULL, NULL);
 
-  listen(sock_rout, 5);
+  char msg[100] = "hola mundo";
+  recv(client_socket, msg, sizeof(msg), 0);
+  printf("mensaje del cliente: %s", msg);
 
-  printf("hola desde el server\n");
-
-  while (1) {
-    char ch;
-    int clen = sizeof(caddr);
-    sock_cli = accept(sock_rout, (struct sockaddr *)&caddr, &clen);
-    read(sock_cli, &ch, 1);
-    ch++;
-    write(sock_cli, &ch, 1);
-    close(sock_cli);
-  }
+  send(client_socket, mensaje, sizeof(mensaje), 0);
+  close(server_socket);
 
   return 0;
 }
