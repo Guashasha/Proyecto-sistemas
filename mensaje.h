@@ -1,4 +1,4 @@
-// mensaje.h
+//mensaje.h
 #ifndef MENSAJE_H
 #define MENSAJE_H
 
