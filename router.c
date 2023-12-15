@@ -20,14 +20,15 @@ int main(int argc, char *argv[]) {
   listen(server_socket, 5);
 
   int client_socket;
-  client_socket = accept(server_socket, NULL, NULL);
 
-  char msg[100] = "hola mundo";
-  recv(client_socket, msg, sizeof(msg), 0);
-  printf("mensaje del cliente: %s", msg);
+  while (1) {
+    client_socket = accept(server_socket, NULL, NULL);
+    recv(client_socket, msg, sizeof(msg), 0);
 
-  send(client_socket, mensaje, sizeof(mensaje), 0);
-  close(server_socket);
+    send(client_socket, mensaje, sizeof(mensaje), 0);
+
+    close(server_socket);
+  }
 
   return 0;
 }
