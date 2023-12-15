@@ -12,18 +12,21 @@ int main(int argc, char *argv[]) {
 
   int result;
 
-  if ((sock_rout = socket(AF_INET, SOCK_STREAM, 0) < 0)) {
+  if ((sock_rout = socket(AF_UNIX, SOCK_STREAM, 0) < 0)) {
     perror("socket fallado");
     exit(EXIT_FAILURE);
   }
 
   saddr.sun_family = AF_UNIX;
   strcpy(saddr.sun_path, "unix_socket");
+
   int slen = sizeof(sock_rout);
 
-  bind(sock_rout, (struct sockaddr *)&sock_rout, slen);
+  bind(sock_rout, (struct sockaddr *)&saddr, slen);
 
   listen(sock_rout, 5);
+
+  printf("hola desde el server\n");
 
   while (1) {
     char ch;
